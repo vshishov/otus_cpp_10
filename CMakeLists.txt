@@ -25,7 +25,17 @@ add_executable(${EXEC_NAME}
 )
 
 add_library(${LIB_NAME} 
-  ${SRC_PATH}/test_lib.cpp
+  ${SRC_PATH}/reader.cpp
+  ${SRC_PATH}/executer.cpp
+  ${SRC_PATH}/logger.cpp
+)
+
+target_link_libraries(${LIB_NAME}
+  ${CMAKE_THREAD_LIBS_INIT}
+)
+
+target_link_libraries(${EXEC_NAME} PRIVATE
+  ${LIB_NAME} 
 )
 
 if(EXISTS "${GTEST_SRCDIR}/CMakeLists.txt")
@@ -33,12 +43,14 @@ if(EXISTS "${GTEST_SRCDIR}/CMakeLists.txt")
 
   add_executable(${TEST_NAME} 
     ${TEST_PATH}/main_test.cpp
+    ${TEST_PATH}/bulkmt_test.cpp  
   )
 
   target_link_libraries(${TEST_NAME}
     PRIVATE
     gtest
     ${CMAKE_THREAD_LIBS_INIT}
+    ${LIB_NAME}
   )
 
   enable_testing()

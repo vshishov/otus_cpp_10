@@ -1,3 +1,6 @@
+#include "reader.h"
+#include "executer.h"
+#include "logger.h"
 
 #include <iostream>
 #include <string>
@@ -32,6 +35,11 @@ int main(int argc, const char** argv)
     std::cerr << "Error: Block size must not be negative!" << std::endl;
     return 1;
   }
+
+  auto pReader = std::make_shared<Otus::Reader>(static_cast<std::size_t>(lBlockSize));
+  auto pExecuter = Otus::Excuter::Create(pReader);
+  auto pLogger = Otus::Logger::Create(pReader);
+  pReader->Exec();
 
   return 0;
 }
