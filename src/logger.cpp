@@ -18,11 +18,19 @@ void Logger::Update(const CommandBlock& a_CommandBlock)
   log << a_CommandBlock;
   log << std::endl;
   log.close();
+
+  ++m_counters.blockCounter;
+  m_counters.commandCounter = a_CommandBlock.Size();
 }
 
 Logger::Logger(const std::string& a_strName)
   : m_strName{a_strName}
 {}
+
+Logger::~Logger()
+{
+  std::cout << m_strName << " " << m_counters << std::endl;
+}
 
 void Logger::SetReader(std::shared_ptr<Reader>& a_pReader)
 {
