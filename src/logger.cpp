@@ -9,19 +9,13 @@ std::shared_ptr<Logger> Logger::Create(const std::string& a_strName, std::shared
   return ptr;
 }
 
-void Logger::Update(const Commands_t& a_Commands)
+void Logger::Update(const CommandBlock& a_CommandBlock)
 {
-  std::string strLogName{"bulk" + a_Commands.begin()->GetTimeStamp() + ".log"};
+  std::string strLogName{"bulk" + a_CommandBlock.GetTimeStamp() + ".log"};
   std::ofstream log(strLogName, std::ios::out);
 
   log << "bulk: ";
-  for (auto it = a_Commands.begin(); it != a_Commands.end(); ++it) {
-    if (it != a_Commands.begin()) {
-      log << ", ";
-    }
-    log << it->GetName();
-    
-  }
+  log << a_CommandBlock;
   log << std::endl;
   log.close();
 }

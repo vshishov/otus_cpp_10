@@ -8,7 +8,7 @@
 
 namespace Otus {
 
-class Reader : public BaseObservable<Commands_t>
+class Reader : public BaseObservable<CommandBlock>
 {
 public: 
   Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn = std::cin);
@@ -22,7 +22,7 @@ private:
   std::string m_strName;
   std::istream& m_isIn;
   std::size_t m_szBlockSize;
-  Commands_t m_vCommands;  
+  CommandBlock m_CommandBlock;  
 };
 
 } // Otus::

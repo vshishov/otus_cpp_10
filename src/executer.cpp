@@ -9,16 +9,10 @@ std::shared_ptr<Excuter> Excuter::Create(const std::string& a_strName, std::shar
   return ptr;
 }
 
-void Excuter::Update(const Commands_t& a_Commands) 
+void Excuter::Update(const CommandBlock& a_CommandBlock) 
 {
   m_osOut << "bulk: ";
-  for (auto command_it = a_Commands.begin(); command_it != a_Commands.cend(); ++command_it) {
-    if (command_it != a_Commands.begin()) {
-      m_osOut << ", ";
-    }
-    m_osOut << command_it->GetName();
-    
-  }
+  m_osOut << a_CommandBlock;
   m_osOut << std::endl;
 }
 

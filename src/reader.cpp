@@ -8,14 +8,14 @@ Reader::Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::ist
   : m_strName{a_strName}
   , m_isIn(a_isIn)
   , m_szBlockSize(a_szBlockSize)
+  , m_CommandBlock(a_szBlockSize)
 { }
 
 void Reader::Exec()
 {
-  m_vCommands.reserve(m_szBlockSize);
-
   std::string strLine;
   std::size_t nBlockDepth{0};
+
   while ( std::getline(m_isIn, strLine) ) {
     if ( strLine == "{" ) {
       if (nBlockDepth == 0) {
@@ -30,10 +30,10 @@ void Reader::Exec()
       nBlockDepth--;
     }
     else {
-      m_vCommands.emplace_back(Command(strLine));
+      m_CommandBlock << strLine;
     }
 
-    if (!nBlockDepth && m_vCommands.size() >= m_szBlockSize) {
+    if (!nBlockDepth && m_CommandBlock.Size() >= m_szBlockSize) {
       Flush();
     }
   }
@@ -41,9 +41,9 @@ void Reader::Exec()
 
 void Reader::Flush() 
 {
-  if (m_vCommands.size() > 0) {
-    Notify(m_vCommands);
-    m_vCommands.clear();
+  if (m_CommandBlock.Size() > 0) {
+    Notify(m_CommandBlock);
+    m_CommandBlock.Clear();
   }
 }
 
