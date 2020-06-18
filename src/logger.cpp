@@ -2,9 +2,9 @@
 
 namespace Otus {
 
-std::shared_ptr<Logger> Logger::Create(std::shared_ptr<Reader>& a_pReader)
+std::shared_ptr<Logger> Logger::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader)
 {
-  auto ptr = std::shared_ptr<Logger>{new Logger{}};
+  auto ptr = std::shared_ptr<Logger>{new Logger{a_strName}};
   ptr->SetReader(a_pReader);
   return ptr;
 }
@@ -26,7 +26,8 @@ void Logger::Update(const Commands_t& a_Commands)
   log.close();
 }
 
-Logger::Logger() 
+Logger::Logger(const std::string& a_strName)
+  : m_strName{a_strName}
 {}
 
 void Logger::SetReader(std::shared_ptr<Reader>& a_pReader)

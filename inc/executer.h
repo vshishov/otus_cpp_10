@@ -5,21 +5,23 @@
 #include "reader.h"
 
 #include <memory>
+#include <string>
 
 namespace Otus {
 
 class Excuter : public IObserver<Commands_t>, public std::enable_shared_from_this<Excuter>
 {
 public:
-  static std::shared_ptr<Excuter> Create(std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut = std::cout);
+  static std::shared_ptr<Excuter> Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut = std::cout);
 
   void Update(const Commands_t& a_Commands) override;
 
 private:
-  Excuter(std::ostream& a_osOut);
+  Excuter(const std::string& a_strName, std::ostream& a_osOut);
   void SetReader(std::shared_ptr<Reader>& a_pReader);
 
 private:
+  std::string m_strName;
   std::ostream& m_osOut;
   std::weak_ptr<Reader> m_pReader;
 };

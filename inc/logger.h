@@ -6,21 +6,24 @@
 
 #include <memory>
 #include <fstream>
+#include <string>
 
 namespace Otus {
 
 class Logger : public IObserver<Commands_t>, public std::enable_shared_from_this<Logger>
 {
 public:
-  static std::shared_ptr<Logger> Create(std::shared_ptr<Reader>& a_pReader);
+  static std::shared_ptr<Logger> Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader);
 
   void Update(const Commands_t& a_Commands) override;
 
   void SetReader(std::shared_ptr<Reader>& a_pReader);
-private:
-  Logger();
 
 private:
+  Logger(const std::string& a_strName);
+
+private:
+  std::string m_strName;
   std::weak_ptr<Reader> m_pReader;
 };
 

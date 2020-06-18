@@ -4,8 +4,9 @@
 
 namespace Otus {
 
-Reader::Reader(std::size_t a_szBlockSize, std::istream& a_isIn) 
-  : m_isIn(a_isIn)
+Reader::Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn) 
+  : m_strName{a_strName}
+  , m_isIn(a_isIn)
   , m_szBlockSize(a_szBlockSize)
 { }
 

@@ -4,13 +4,14 @@
 #include "command.h"
 
 #include <iostream>
+#include <string>
 
 namespace Otus {
 
 class Reader : public BaseObservable<Commands_t>
 {
 public: 
-  Reader(std::size_t a_szBlockSize, std::istream& a_isIn = std::cin);
+  Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn = std::cin);
 
   void Exec();
 
@@ -18,6 +19,7 @@ private:
   void Flush();
 
 private:
+  std::string m_strName;
   std::istream& m_isIn;
   std::size_t m_szBlockSize;
   Commands_t m_vCommands;  

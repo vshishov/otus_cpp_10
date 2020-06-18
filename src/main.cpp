@@ -36,9 +36,9 @@ int main(int argc, const char** argv)
     return 1;
   }
 
-  auto pReader = std::make_shared<Otus::Reader>(static_cast<std::size_t>(lBlockSize));
-  auto pExecuter = Otus::Excuter::Create(pReader);
-  auto pLogger = Otus::Logger::Create(pReader);
+  auto pReader = std::make_shared<Otus::Reader>("main", static_cast<std::size_t>(lBlockSize));
+  auto pExecuter = Otus::Excuter::Create("log", pReader);
+  auto pLogger = Otus::Logger::Create("file1", pReader);
   pReader->Exec();
 
   return 0;

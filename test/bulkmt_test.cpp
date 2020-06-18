@@ -11,8 +11,8 @@ TEST(bulk_simple, empty_stream) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(2, ssTestIn);
-  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+  auto pReader = std::make_shared<Otus::Reader>("main", 2, ssTestIn);
+  auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
   pReader->Exec();
 
@@ -23,8 +23,8 @@ TEST(bulk_simple, not_empty_stream) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
-  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+  auto pReader = std::make_shared<Otus::Reader>("main", 3, ssTestIn);
+  auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl
     << "cmd2" << std::endl
@@ -41,8 +41,8 @@ TEST(bulk_simple, not_complete) {
   std::stringstream ssTestOut;
 
   {
-    auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
-    auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+    auto pReader = std::make_shared<Otus::Reader>("main", 3, ssTestIn);
+    auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
     ssTestIn << "cmd1" << std::endl
       << "cmd2" << std::endl
@@ -58,8 +58,8 @@ TEST(bulk_blocks, single_block) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
-  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+  auto pReader = std::make_shared<Otus::Reader>("main", 3, ssTestIn);
+  auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
   ssTestIn << "{" << std::endl
     << "cmd1" << std::endl
@@ -79,8 +79,8 @@ TEST(bulk_blocks, single_block_in_default_block) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
-  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+  auto pReader = std::make_shared<Otus::Reader>("main", 3, ssTestIn);
+  auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl
     << "cmd2" << std::endl
@@ -102,8 +102,8 @@ TEST(bulk_blocks, multi_block) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
-  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+  auto pReader = std::make_shared<Otus::Reader>("main", 3, ssTestIn);
+  auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl
     << "cmd2" << std::endl
@@ -135,8 +135,8 @@ TEST(bulk_blocks, not_complete) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
   {
-    auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
-    auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+    auto pReader = std::make_shared<Otus::Reader>("main", 3, ssTestIn);
+    auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
     ssTestIn << "cmd1" << std::endl
       << "cmd2" << std::endl
@@ -165,8 +165,8 @@ TEST(bulk_blocks, not_correct_sequence) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
-  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+  auto pReader = std::make_shared<Otus::Reader>("main", 3, ssTestIn);
+  auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl
     << "cmd2" << std::endl

@@ -2,9 +2,9 @@
 
 namespace Otus {
 
-std::shared_ptr<Excuter> Excuter::Create(std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut)
+std::shared_ptr<Excuter> Excuter::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut)
 {
-  auto ptr = std::shared_ptr<Excuter>{new Excuter{a_osOut}};
+  auto ptr = std::shared_ptr<Excuter>{new Excuter{a_strName, a_osOut}};
   ptr->SetReader(a_pReader);
   return ptr;
 }
@@ -22,8 +22,9 @@ void Excuter::Update(const Commands_t& a_Commands)
   m_osOut << std::endl;
 }
 
-Excuter::Excuter(std::ostream& a_osOut)
-  : m_osOut(a_osOut)
+Excuter::Excuter(const std::string& a_strName, std::ostream& a_osOut)
+  : m_strName{a_strName}
+  , m_osOut(a_osOut)
 { }
 
 void Excuter::SetReader(std::shared_ptr<Reader>& a_pReader)
