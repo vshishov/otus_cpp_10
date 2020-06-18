@@ -9,14 +9,7 @@ Reader::Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::ist
   , m_isIn(a_isIn)
   , m_szBlockSize(a_szBlockSize)
   , m_CommandBlock(a_szBlockSize)
-  , m_counters{0, 0, 0}
 { }
-
-Reader::~Reader()
-{
-  std::cout << m_strName << ' ' << m_counters << std::endl;
-}
-
 
 void Reader::Exec()
 {
@@ -45,6 +38,7 @@ void Reader::Exec()
       Flush();
     }
   }
+  std::cout << m_strName << ": " << m_counters << std::endl;
 }
 
 void Reader::Flush() 

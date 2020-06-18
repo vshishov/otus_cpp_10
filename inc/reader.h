@@ -13,7 +13,7 @@ class Reader : public BaseObservable<CommandBlock>
 {
 public: 
   Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn = std::cin);
-  ~Reader();
+  ~Reader() = default;
 
   void Exec();
 

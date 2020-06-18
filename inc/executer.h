@@ -9,6 +9,7 @@
 #include <string>
 #include <thread>
 #include <atomic>
+#include <mutex>
 
 namespace Otus {
 
@@ -24,19 +25,19 @@ private:
   Excuter(const std::string& a_strName, std::ostream& a_osOut);
   void SetReader(std::shared_ptr<Reader>& a_pReader);
   
-  void Procces();
+  void Procces(std::string a_strName);
   void JoinThred();
   
 
 private:
-  std::string m_strName;
   std::ostream& m_osOut;
   std::weak_ptr<Reader> m_pReader;
-  Counters m_counters;
 
-  QueueCommandBllock_t m_queueCommand;
   std::thread m_thread;
   std::atomic<bool> m_bExit;
+
+  std::recursive_mutex m_lock;
+  QueueCommandBllock_t m_queueCommand;
 };
 
 } // Otus::

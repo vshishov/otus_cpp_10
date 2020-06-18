@@ -8,6 +8,9 @@
 #include <memory>
 #include <fstream>
 #include <string>
+#include <thread>
+#include <atomic>
+#include <mutex>
 
 namespace Otus {
 
@@ -18,16 +21,22 @@ public:
   ~Logger();
 
   void Update(const CommandBlock& a_Commands) override;
-
   void SetReader(std::shared_ptr<Reader>& a_pReader);
+
+  void Process(std::string a_strName);
+  void JoinTread();
 
 private:
   Logger(const std::string& a_strName);
 
 private:
-  std::string m_strName;
   std::weak_ptr<Reader> m_pReader;
-  Counters m_counters;
+
+  std::vector<std::thread> m_threads;
+  std::atomic<bool> m_bExit;
+
+  std::recursive_mutex m_lock;
+  QueueCommandBllock_t m_queueCommand;
 };
 
 } // Otus::

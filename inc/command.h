@@ -11,6 +11,8 @@ namespace Otus {
 class CommandBlock
 {
 public:
+  CommandBlock() = default;
+  
   CommandBlock(size_t a_nBlockSize)
   { 
     m_vCommands.reserve(a_nBlockSize);

@@ -8,9 +8,15 @@ namespace Otus
     
 struct Counters
 {
-	std::size_t lineCounter{0};
-	std::size_t blockCounter{0};
-	std::size_t commandCounter{0};
+	Counters()
+		: lineCounter{0}
+		, blockCounter{0}
+		, commandCounter{0}
+	{}
+
+	std::size_t lineCounter;
+	std::size_t blockCounter;
+	std::size_t commandCounter;
 
 	friend std::ostream& operator<< (std::ostream& a_osOut, const Counters& a_counters)
 	{
