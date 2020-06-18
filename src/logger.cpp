@@ -20,7 +20,7 @@ void Logger::Update(const CommandBlock& a_CommandBlock)
   log.close();
 
   ++m_counters.blockCounter;
-  m_counters.commandCounter = a_CommandBlock.Size();
+  m_counters.commandCounter += a_CommandBlock.Size();
 }
 
 Logger::Logger(const std::string& a_strName)

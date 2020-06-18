@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <queue>
 
 namespace Otus {
 
@@ -61,5 +62,7 @@ private:
   std::chrono::system_clock::time_point m_TimeStamp;
   std::vector<std::string> m_vCommands;
 };
+
+using QueueCommandBllock_t = std::queue<CommandBlock>;
 
 } // Otus::

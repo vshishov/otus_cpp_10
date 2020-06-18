@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <string>
+#include <thread>
+#include <atomic>
 
 namespace Otus {
 
@@ -21,12 +23,20 @@ public:
 private:
   Excuter(const std::string& a_strName, std::ostream& a_osOut);
   void SetReader(std::shared_ptr<Reader>& a_pReader);
+  
+  void Procces();
+  void JoinThred();
+  
 
 private:
   std::string m_strName;
   std::ostream& m_osOut;
   std::weak_ptr<Reader> m_pReader;
   Counters m_counters;
+
+  QueueCommandBllock_t m_queueCommand;
+  std::thread m_thread;
+  std::atomic<bool> m_bExit;
 };
 
 } // Otus::
