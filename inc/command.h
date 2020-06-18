@@ -26,6 +26,11 @@ public:
     return std::to_string(seconds);
   }
 
+  bool Empty() const
+  {
+    return m_vCommands.empty();
+  }
+
   std::size_t Size() const
   {
     return m_vCommands.size();

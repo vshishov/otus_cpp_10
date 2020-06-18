@@ -11,6 +11,7 @@
 #include <thread>
 #include <atomic>
 #include <mutex>
+#include <condition_variable>
 
 namespace Otus {
 
@@ -33,9 +34,11 @@ private:
   std::weak_ptr<Reader> m_pReader;
 
   std::vector<std::thread> m_threads;
-  std::atomic<bool> m_bExit;
+  std::atomic<bool> m_bDone;
 
-  std::recursive_mutex m_lock;
+  std::mutex m_queueLock;
+  std::mutex m_printLock;
+  std::condition_variable m_queueCheck;
   QueueCommandBllock_t m_queueCommand;
 };
 
