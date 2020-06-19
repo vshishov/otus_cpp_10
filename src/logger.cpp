@@ -8,7 +8,7 @@ Logger::Logger(const std::string& a_strName, std::ostream& a_osMetricsOut)
   , m_bDone{false}
 {
   
-  for (size_t i = 0; i < 3; ++i) {
+  for (size_t i = 0; i < 2; ++i) {
     std::string strThreadName = a_strName + std::to_string(i + 1);
     m_threads.emplace_back( std::thread(&Logger::Process, this, strThreadName) );
   }
