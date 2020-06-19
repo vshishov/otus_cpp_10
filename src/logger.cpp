@@ -32,7 +32,7 @@ void Logger::Update(const CommandBlock& a_CommandBlock)
     std::unique_lock<std::mutex> lock(m_queueLock);
     m_queueCommand.push(a_CommandBlock);
   }
-  m_queueCheck.notify_all();
+  m_queueCheck.notify_one();
 }
 
 void Logger::Process(std::string a_strName)
@@ -50,7 +50,7 @@ void Logger::Process(std::string a_strName)
     }
 
     if (commandBlock.Size()) {
-      std::string strLogName{"bulk_" + a_strName + "_" + commandBlock.GetTimeStamp() + ".log"};
+      std::string strLogName{"bulk_" + a_strName + "_" + commandBlock.GetTimeStamp() + std::to_string(counters.blockCounter) + std::to_string(counters.commandCounter) + ".log"};
       std::ofstream log(strLogName, std::ios::out);
 
       log << "bulk: " << commandBlock << std::endl;
