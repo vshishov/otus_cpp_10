@@ -3,8 +3,9 @@
 namespace Otus {
 
 Excuter::Excuter(const std::string& a_strName, std::ostream& a_osOut)
-  : m_osOut(a_osOut)
-  , m_thread(&Excuter::Procces, this, a_strName)
+  : m_osOut{a_osOut}
+  , m_bDone{false}
+  , m_thread{&Excuter::Procces, this, a_strName}
 { }
 
 Excuter::~Excuter()
@@ -21,17 +22,21 @@ std::shared_ptr<Excuter> Excuter::Create(const std::string& a_strName, std::shar
 
 void Excuter::Update(const CommandBlock& a_CommandBlock) 
 {
-  m_queueCommand.push(a_CommandBlock);  
+  {
+    std::unique_lock<std::mutex> lock(m_queueLock);
+    m_queueCommand.push(a_CommandBlock);
+  }
+  m_queueCheck.notify_one(); 
 }
 
-void Excuter::Procces(std::string a_strName)
+void Excuter::Procces(std::string /*a_strName*/)
 {
-  m_bExit = false;
   Counters counters;
   CommandBlock commandBlock;
-  while (!m_bExit) {
+  while (!m_bDone) {
     {
-      std::lock_guard<std::recursive_mutex> locker(m_lock);
+      std::unique_lock<std::mutex> locker(m_queueLock);
+      m_queueCheck.wait(locker, [&](){return !m_queueCommand.empty() || m_bDone;});
       if (!m_queueCommand.empty()) {
         commandBlock = m_queueCommand.front();
         m_queueCommand.pop();
@@ -39,22 +44,24 @@ void Excuter::Procces(std::string a_strName)
     }
       
     if (commandBlock.Size()){
-      m_osOut << "bulk: ";
-      m_osOut << commandBlock;
-      m_osOut << std::endl;
+      {
+        std::unique_lock<std::mutex> locker(m_printLock);
+        m_osOut << "bulk: " << commandBlock << std::endl;
+      }
 
       ++counters.blockCounter;
-        counters.commandCounter += commandBlock.Size();
+      counters.commandCounter += commandBlock.Size();
       commandBlock.Clear();
     }
-    std::this_thread::sleep_for(std::chrono::seconds(1));
   }
-  std::cout << a_strName << ": " << counters << std::endl;
+  // std::unique_lock<std::mutex> locker(m_printLock);
+  // std::cout << a_strName << ": " << counters << std::endl;
 }
 
 void Excuter::JoinThred()
 {
-  m_bExit = true;
+  m_bDone = true;
+  m_queueCheck.notify_all();
   if (m_thread.joinable()) {
     m_thread.join();
   }
