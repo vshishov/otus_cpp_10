@@ -3,8 +3,9 @@
 
 namespace Otus {
 
-Logger::Logger(const std::string& a_strName)
-  : m_bDone{false}
+Logger::Logger(const std::string& a_strName, std::ostream& a_osMetricsOut)
+  : m_osMetricsOut{a_osMetricsOut}
+  , m_bDone{false}
 {
   
   for (size_t i = 0; i < 3; ++i) {
@@ -18,9 +19,9 @@ Logger::~Logger()
   JoinTread();
 }
 
-std::shared_ptr<Logger> Logger::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader)
+std::shared_ptr<Logger> Logger::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osMetricsOut)
 {
-  auto ptr = std::shared_ptr<Logger>{new Logger{a_strName}};
+  auto ptr = std::shared_ptr<Logger>{new Logger{a_strName, a_osMetricsOut}};
   ptr->SetReader(a_pReader);
   return ptr;
 }
@@ -31,13 +32,13 @@ void Logger::Update(const CommandBlock& a_CommandBlock)
     std::unique_lock<std::mutex> lock(m_queueLock);
     m_queueCommand.push(a_CommandBlock);
   }
-  m_queueCheck.notify_one();
+  m_queueCheck.notify_all();
 }
 
 void Logger::Process(std::string a_strName)
 {
   CommandBlock commandBlock;
-  Counters counters;
+  Counters counters{a_strName};
   while (!m_bDone) {
     {
       std::unique_lock<std::mutex> locker(m_queueLock);
@@ -63,7 +64,7 @@ void Logger::Process(std::string a_strName)
   
   {
     std::unique_lock<std::mutex> locker(m_printLock);
-    std::cout << a_strName << ": " << counters << std::endl;
+    m_osMetricsOut << counters << std::endl;
   }
 }
 

@@ -27,12 +27,12 @@ void Excuter::Update(const CommandBlock& a_CommandBlock)
     std::unique_lock<std::mutex> lock(m_queueLock);
     m_queueCommand.push(a_CommandBlock);
   }
-  m_queueCheck.notify_one(); 
+  m_queueCheck.notify_all(); 
 }
 
 void Excuter::Procces(std::string a_strName)
 {
-  Counters counters;
+  Counters counters{a_strName};
   CommandBlock commandBlock;
   while (!m_bDone) {
     {
@@ -56,10 +56,7 @@ void Excuter::Procces(std::string a_strName)
     }
   }
   
-  {
-    std::unique_lock<std::mutex> locker(m_printLock);
-    m_osMetricsOut << a_strName << ": " << counters << std::endl;
-  }
+  m_osMetricsOut << counters << std::endl;
 }
 
 void Excuter::JoinThred()
