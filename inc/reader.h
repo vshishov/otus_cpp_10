@@ -2,7 +2,7 @@
 
 #include "observer.h"
 #include "command.h"
-#include <common.h>
+#include <counter.h>
 
 #include <iostream>
 #include <string>

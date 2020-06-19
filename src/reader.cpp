@@ -1,4 +1,5 @@
 #include "reader.h"
+#include "counter.h"
 
 #include <string>
 

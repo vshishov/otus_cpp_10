@@ -1,4 +1,5 @@
 #include "logger.h"
+#include "counter.h"
 
 namespace Otus {
 
@@ -30,7 +31,7 @@ void Logger::Update(const CommandBlock& a_CommandBlock)
     std::unique_lock<std::mutex> lock(m_queueLock);
     m_queueCommand.push(a_CommandBlock);
   }
-  m_queueCheck.notify_all();
+  m_queueCheck.notify_one();
 }
 
 void Logger::Process(std::string a_strName)

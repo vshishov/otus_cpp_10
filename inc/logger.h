@@ -3,7 +3,6 @@
 #include "command.h"
 #include "observer.h"
 #include "reader.h"
-#include "common.h"
 
 #include <memory>
 #include <fstream>
