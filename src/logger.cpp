@@ -60,8 +60,11 @@ void Logger::Process(std::string a_strName)
       std::this_thread::sleep_for(std::chrono::seconds(1));
     }
   }
-  std::unique_lock<std::mutex> locker(m_printLock);
-  std::cout << a_strName << ": " << counters << std::endl;
+  
+  {
+    std::unique_lock<std::mutex> locker(m_printLock);
+    std::cout << a_strName << ": " << counters << std::endl;
+  }
 }
 
 void Logger::JoinTread()

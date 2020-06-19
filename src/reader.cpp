@@ -5,11 +5,12 @@
 
 namespace Otus {
 
-Reader::Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn) 
+Reader::Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn, std::ostream& a_osMetricsOut) 
   : m_strName{a_strName}
-  , m_isIn(a_isIn)
-  , m_szBlockSize(a_szBlockSize)
-  , m_CommandBlock(a_szBlockSize)
+  , m_isIn{a_isIn}
+  , m_osMetricsOut{a_osMetricsOut}
+  , m_szBlockSize{a_szBlockSize}
+  , m_CommandBlock{a_szBlockSize}
 { }
 
 void Reader::Exec()
@@ -39,7 +40,11 @@ void Reader::Exec()
       Flush();
     }
   }
-  std::cout << m_strName << ": " << m_counters << std::endl;
+
+  {
+    std::unique_lock<std::mutex> locker(m_printLock);
+    m_osMetricsOut << m_strName << ": " << m_counters << std::endl;
+  }
 }
 
 void Reader::Flush() 
