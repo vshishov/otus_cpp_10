@@ -14,7 +14,7 @@ class Bulkmt_Test : public ::testing::Test
 protected:
   void Run(std::size_t a_nBlockSize, std::size_t a_szDelay = 1)
   {      
-    auto pReader = std::make_shared<Otus::Reader>("main", a_nBlockSize, ssTestIn, ssMetricsMain);
+    auto pReader = Otus::Reader::Create("main", a_nBlockSize, ssTestIn, ssMetricsMain);
     auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut, ssMetricsLog);
    
     pReader->Exec();

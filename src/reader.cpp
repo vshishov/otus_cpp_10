@@ -14,8 +14,12 @@ Reader::Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::ist
 { }
 
 Reader::~Reader()
+{ }
+
+std::shared_ptr<Reader> Reader::Create(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn, std::ostream& a_osMetricsOut)
 {
-  
+  auto ptr = std::shared_ptr<Reader>{ new Reader{a_strName, a_szBlockSize, a_isIn, a_osMetricsOut} };
+  return ptr;
 }
 
 void Reader::Exec()
